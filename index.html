@@ -1597,9 +1597,13 @@ body.loaded .hw{animation-play-state:running}
 <!-- Back to top (desktop) -->
 <button class="to-top" id="toTop" aria-label="Back to top"><svg width="18" height="18" style="transform:rotate(-45deg)"><use href="#i-arrow"/></svg></button>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 (function(){
   "use strict";
+
+  /* ---------- EmailJS init ---------- */
+  if(window.emailjs){ emailjs.init({ publicKey: "5J_kISJW_hITPbTZf" }); }
 
   /* ---------- Navbar scroll state ---------- */
   var nav = document.getElementById("nav");
@@ -1762,25 +1766,39 @@ body.loaded .hw{animation-play-state:running}
     ok = mark(md, md.value.trim().length < 1) && ok;
     if(!ok) return;
     qfSubmit.disabled = true; qfSubmitTxt.textContent = "Processing...";
-    /* Build email body and send to info@amprator.com */
-    var subject = "Quote request - " + mk.value.trim() + " " + md.value.trim() + " (" + yr.value.trim() + ")";
-    var body =
-      "New quote request from the website:\n\n" +
-      "Full name: " + n.value.trim() + "\n" +
-      "Email: " + em.value.trim() + "\n" +
-      "Phone: " + ph.value.trim() + "\n" +
-      "Origin (City/State): " + pk.value.trim() + "\n" +
-      "Destination province: " + ds.value.trim() + "\n" +
-      "Vehicle year: " + yr.value.trim() + "\n" +
-      "Vehicle make: " + mk.value.trim() + "\n" +
-      "Vehicle model: " + md.value.trim() + "\n" +
-      "Additional details: " + (document.getElementById("qf_notes").value.trim() || "-") + "\n";
-    window.location.href = "mailto:info@amprator.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-    setTimeout(function(){
+    /* Send via EmailJS to info@amprator.com */
+    emailjs.send("service_tuw43re", "template_0xhy2qk", {
+      to_email: "info@amprator.com",
+      form_type: "Quote request",
+      from_name: n.value.trim(),
+      from_email: em.value.trim(),
+      phone: ph.value.trim(),
+      origin: pk.value.trim(),
+      destination: ds.value.trim(),
+      vehicle_year: yr.value.trim(),
+      vehicle_make: mk.value.trim(),
+      vehicle_model: md.value.trim(),
+      notes: document.getElementById("qf_notes").value.trim() || "-",
+      message:
+        "New quote request from the website:\n\n" +
+        "Full name: " + n.value.trim() + "\n" +
+        "Email: " + em.value.trim() + "\n" +
+        "Phone: " + ph.value.trim() + "\n" +
+        "Origin (City/State): " + pk.value.trim() + "\n" +
+        "Destination province: " + ds.value.trim() + "\n" +
+        "Vehicle year: " + yr.value.trim() + "\n" +
+        "Vehicle make: " + mk.value.trim() + "\n" +
+        "Vehicle model: " + md.value.trim() + "\n" +
+        "Additional details: " + (document.getElementById("qf_notes").value.trim() || "-") + "\n"
+    }).then(function(){
       qf.style.display = "none";
       qfSuccess.classList.add("show");
       qfSubmit.disabled = false; qfSubmitTxt.textContent = "Request exact quote";
-    }, 900);
+    }).catch(function(err){
+      alert("Sorry, something went wrong sending your request. Please email us directly at info@amprator.com.");
+      qfSubmit.disabled = false; qfSubmitTxt.textContent = "Request exact quote";
+      console.error("EmailJS error:", err);
+    });
   });
   document.getElementById("quoteReset").addEventListener("click", function(){
     qfSuccess.classList.remove("show");
@@ -1808,21 +1826,29 @@ body.loaded .hw{animation-play-state:running}
     ok = mark(ms, ms.value.trim().length < 5) && ok;
     if(!ok) return;
     cfSubmit.disabled = true; cfSubmitTxt.textContent = "Sending...";
-    /* Build email body and send to info@amprator.com */
-    var subject = "Website contact - " + n.value.trim();
-    var body =
-      "New contact message from the website:\n\n" +
-      "Name: " + n.value.trim() + "\n" +
-      "Email: " + em.value.trim() + "\n" +
-      "Phone: " + ph.value.trim() + "\n" +
-      "Message: " + ms.value.trim() + "\n";
-    window.location.href = "mailto:info@amprator.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-    setTimeout(function(){
+    /* Send via EmailJS to info@amprator.com */
+    emailjs.send("service_tuw43re", "template_0xhy2qk", {
+      to_email: "info@amprator.com",
+      form_type: "Contact message",
+      from_name: n.value.trim(),
+      from_email: em.value.trim(),
+      phone: ph.value.trim(),
+      message:
+        "New contact message from the website:\n\n" +
+        "Name: " + n.value.trim() + "\n" +
+        "Email: " + em.value.trim() + "\n" +
+        "Phone: " + ph.value.trim() + "\n" +
+        "Message: " + ms.value.trim() + "\n"
+    }).then(function(){
       cfSubmit.disabled = false; cfSubmitTxt.textContent = "Send message";
       cfOk.style.display = "block";
       cf.reset();
       setTimeout(function(){ cfOk.style.display = "none"; }, 6000);
-    }, 800);
+    }).catch(function(err){
+      alert("Sorry, something went wrong sending your message. Please email us directly at info@amprator.com.");
+      cfSubmit.disabled = false; cfSubmitTxt.textContent = "Send message";
+      console.error("EmailJS error:", err);
+    });
   });
   cf.querySelectorAll("input,textarea").forEach(function(inp){
     inp.addEventListener("input", function(){ fieldOf(inp).classList.remove("error"); });
