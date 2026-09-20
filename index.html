@@ -1762,6 +1762,20 @@ body.loaded .hw{animation-play-state:running}
     ok = mark(md, md.value.trim().length < 1) && ok;
     if(!ok) return;
     qfSubmit.disabled = true; qfSubmitTxt.textContent = "Processing...";
+    /* Build email body and send to info@amprator.com */
+    var subject = "Quote request - " + mk.value.trim() + " " + md.value.trim() + " (" + yr.value.trim() + ")";
+    var body =
+      "New quote request from the website:\n\n" +
+      "Full name: " + n.value.trim() + "\n" +
+      "Email: " + em.value.trim() + "\n" +
+      "Phone: " + ph.value.trim() + "\n" +
+      "Origin (City/State): " + pk.value.trim() + "\n" +
+      "Destination province: " + ds.value.trim() + "\n" +
+      "Vehicle year: " + yr.value.trim() + "\n" +
+      "Vehicle make: " + mk.value.trim() + "\n" +
+      "Vehicle model: " + md.value.trim() + "\n" +
+      "Additional details: " + (document.getElementById("qf_notes").value.trim() || "-") + "\n";
+    window.location.href = "mailto:info@amprator.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
     setTimeout(function(){
       qf.style.display = "none";
       qfSuccess.classList.add("show");
@@ -1794,6 +1808,15 @@ body.loaded .hw{animation-play-state:running}
     ok = mark(ms, ms.value.trim().length < 5) && ok;
     if(!ok) return;
     cfSubmit.disabled = true; cfSubmitTxt.textContent = "Sending...";
+    /* Build email body and send to info@amprator.com */
+    var subject = "Website contact - " + n.value.trim();
+    var body =
+      "New contact message from the website:\n\n" +
+      "Name: " + n.value.trim() + "\n" +
+      "Email: " + em.value.trim() + "\n" +
+      "Phone: " + ph.value.trim() + "\n" +
+      "Message: " + ms.value.trim() + "\n";
+    window.location.href = "mailto:info@amprator.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
     setTimeout(function(){
       cfSubmit.disabled = false; cfSubmitTxt.textContent = "Send message";
       cfOk.style.display = "block";
