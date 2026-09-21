@@ -1603,7 +1603,7 @@ body.loaded .hw{animation-play-state:running}
   "use strict";
 
   /* ---------- EmailJS init ---------- */
-  if(window.emailjs){ emailjs.init({ publicKey: "5J_kISJW_hITPbTZf" }); }
+  if(window.emailjs){ emailjs.init({ publicKey: "vNiF4QG6KIgZF56Mv" }); }
 
   /* ---------- Navbar scroll state ---------- */
   var nav = document.getElementById("nav");
@@ -1767,8 +1767,8 @@ body.loaded .hw{animation-play-state:running}
     if(!ok) return;
     qfSubmit.disabled = true; qfSubmitTxt.textContent = "Processing...";
     /* Send via EmailJS to info@amprator.com */
-    emailjs.send("service_tuw43re", "template_0xhy2qk", {
-      to_email: "info@amprator.com",
+    emailjs.send("service_yp80zzv", "template_d3jaiph", {
+      email: "info@amprator.com",
       form_type: "Quote request",
       from_name: n.value.trim(),
       from_email: em.value.trim(),
@@ -1827,8 +1827,8 @@ body.loaded .hw{animation-play-state:running}
     if(!ok) return;
     cfSubmit.disabled = true; cfSubmitTxt.textContent = "Sending...";
     /* Send via EmailJS to info@amprator.com */
-    emailjs.send("service_tuw43re", "template_0xhy2qk", {
-      to_email: "info@amprator.com",
+    emailjs.send("service_yp80zzv", "template_d3jaiph", {
+      email: "info@amprator.com",
       form_type: "Contact message",
       from_name: n.value.trim(),
       from_email: em.value.trim(),
